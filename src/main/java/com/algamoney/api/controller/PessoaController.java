@@ -1,19 +1,21 @@
 package com.algamoney.api.controller;
 
-import java.net.URI;
-
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.algamoney.api.event.RecursoCriadoEvent;
 import com.algamoney.api.model.Pessoa;
 import com.algamoney.api.repository.PessoaRepository;
 
@@ -24,14 +26,18 @@ public class PessoaController {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 	
+	@Autowired
+	private ApplicationEventPublisher publisher;
+	
 	@PostMapping
-	public ResponseEntity<Pessoa> cadastrar(@RequestBody @Valid Pessoa pessoa) {
+	@ResponseStatus(HttpStatus.CREATED)
+	public Pessoa cadastrar(@RequestBody @Valid Pessoa pessoa, HttpServletResponse httpServleResponse) {
 		
-		pessoa = pessoaRepository.save(pessoa);
-		
-	   URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{codigo}").buildAndExpand(pessoa.getCodigo()).toUri();
+	   pessoa =  pessoaRepository.save(pessoa);
 	   
-	   return ResponseEntity.created(uri).body(pessoa);
+	   publisher.publishEvent(new RecursoCriadoEvent(this, httpServleResponse, pessoa.getCodigo()));
+	   
+	   return pessoa;
 	}
 	
 	@GetMapping("/{codigo}")
