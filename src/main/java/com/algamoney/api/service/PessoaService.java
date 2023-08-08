@@ -1,11 +1,11 @@
 package com.algamoney.api.service;
 
-import javax.transaction.Transactional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.algamoney.api.model.Pessoa;
 import com.algamoney.api.repository.PessoaRepository;
@@ -18,10 +18,23 @@ public class PessoaService {
 	
 	@Transactional
 	public Pessoa atualizar(Pessoa pessoa, Long codigo) {
-		Pessoa pessoaSalva  = pessoaRepository.findById(codigo).orElseThrow(() -> new EmptyResultDataAccessException(1));
+		Pessoa pessoaSalva  = buscarPessoa(codigo);
 		
 		BeanUtils.copyProperties(pessoa, pessoaSalva, "codigo");
 		
 		return pessoaRepository.save(pessoaSalva);
+	}
+
+	@Transactional
+	public void atualizarPropriedadeAtivo(Long codigo, Boolean ativo) {
+		Pessoa pessoa = buscarPessoa(codigo);
+		
+		pessoa.setAtivo(ativo);
+		
+	}
+	
+	private Pessoa buscarPessoa(Long codigo) {
+		return pessoaRepository.findById(codigo)
+				.orElseThrow(() -> new EmptyResultDataAccessException(1));
 	}
 }
