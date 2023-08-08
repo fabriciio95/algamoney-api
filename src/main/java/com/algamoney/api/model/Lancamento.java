@@ -10,8 +10,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class Lancamento {
@@ -24,8 +27,10 @@ public class Lancamento {
 	private String descricao;
 	
 	@NotNull
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataVencimento;
 	
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataPagamento;
 	
 	@NotNull
@@ -37,9 +42,11 @@ public class Lancamento {
 	private TipoLancamento tipo;
 	
 	@ManyToOne
+	@JoinColumn(name = "codigo_categoria")
 	private Categoria categoria;
 	
 	@ManyToOne
+	@JoinColumn(name = "codigo_pessoa")
 	private Pessoa pessoa;
 
 	public Long getCodigo() {
