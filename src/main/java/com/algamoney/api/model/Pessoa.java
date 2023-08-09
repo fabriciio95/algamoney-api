@@ -7,7 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Pessoa {
@@ -57,6 +60,12 @@ public class Pessoa {
 		this.endereco = endereco;
 	}
 
+	@JsonIgnore
+	@Transient
+	public boolean isInativo() {
+		return !ativo;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(codigo);
