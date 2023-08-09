@@ -25,6 +25,7 @@ import com.algamoney.api.event.RecursoCriadoEvent;
 import com.algamoney.api.exceptionhandler.AlgamoneyExceptionHandler.Erro;
 import com.algamoney.api.model.Lancamento;
 import com.algamoney.api.repository.LancamentoRepository;
+import com.algamoney.api.repository.filter.LancamentoFilter;
 import com.algamoney.api.service.LancamentoService;
 import com.algamoney.api.service.exception.PessoaInexistenteOuInativaException;
 
@@ -46,8 +47,8 @@ public class LancamentoController {
 	
 	
 	@GetMapping
-	public List<Lancamento> listar(){
-		return lancamentoRepository.findAll();
+	public List<Lancamento> pesquisar(LancamentoFilter lancamentoFilter){
+		return lancamentoRepository.filtrar(lancamentoFilter);
 	}
 	
 	@GetMapping("/{codigo}")
