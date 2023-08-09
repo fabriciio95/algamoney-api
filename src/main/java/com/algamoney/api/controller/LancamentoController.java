@@ -3,6 +3,7 @@ package com.algamoney.api.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -45,7 +46,7 @@ public class LancamentoController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Lancamento cadastrarLancamento(@RequestBody Lancamento lancamento, HttpServletResponse response) {
+	public Lancamento cadastrarLancamento(@RequestBody @Valid Lancamento lancamento, HttpServletResponse response) {
 		lancamento = lancamentoRepository.save(lancamento);
 		
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamento.getCodigo()));
