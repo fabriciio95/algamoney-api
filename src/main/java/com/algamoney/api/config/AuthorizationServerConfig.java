@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -25,13 +26,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
 		    			    .withClient("angular")
 		    				.secret(passwordEncoder.encode("@ngul@r0"))
 		    				.scopes("read", "write")
-		    				.authorizedGrantTypes("password")
+		    				.authorizedGrantTypes("password", "refresh_token")
+		    				.refreshTokenValiditySeconds(3600 * 24)
 		    				.accessTokenValiditySeconds(1800);    
 	}
 	
@@ -40,6 +45,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		endpoints
 		        .tokenStore(tokenStore())
 		        .accessTokenConverter(accessTokenConverter())
+		        .reuseRefreshTokens(false)
+		        .userDetailsService(userDetailsService)
 		        .authenticationManager(authenticationManager);
 	}
 	
