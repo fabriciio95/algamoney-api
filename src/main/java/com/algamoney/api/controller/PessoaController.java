@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,7 @@ public class PessoaController {
 	@Autowired
 	private PessoaService pessoaService;
 	
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA') and hasAuthority('SCOPE_WRITE')")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Pessoa cadastrar(@RequestBody @Valid Pessoa pessoa, HttpServletResponse httpServleResponse) {
@@ -46,6 +48,7 @@ public class PessoaController {
 	   return pessoa;
 	}
 	
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and hasAuthority('SCOPE_READ')")
 	@GetMapping("/{codigo}")
 	public ResponseEntity<Pessoa> buscar(@PathVariable Long codigo) {
 		return pessoaRepository.findById(codigo)
@@ -53,17 +56,20 @@ public class PessoaController {
 				 .orElse(ResponseEntity.notFound().build());
 	}
 	
+	@PreAuthorize("hasAuthority('ROLE_REMOVER_PESSOA') and hasAuthority('SCOPE_WRITE')")
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deletar(@PathVariable Long codigo) {
 		pessoaRepository.deleteById(codigo);
 	}
 	
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA') and hasAuthority('SCOPE_WRITE')")
 	@PutMapping("/{codigo}")
 	public Pessoa atualizar(@PathVariable Long codigo, @RequestBody @Valid Pessoa pessoa) {
 		return pessoaService.atualizar(pessoa, codigo);
 	}
 	
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA') and hasAuthority('SCOPE_WRITE')")
 	@PutMapping("/{codigo}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void atualizarPropriedadeAtivo(@PathVariable Long codigo, @RequestBody Boolean ativo) {
