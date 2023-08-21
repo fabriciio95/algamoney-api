@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,11 +33,13 @@ public class CategoriaController {
 	private ApplicationEventPublisher publisher;
 	
 	
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA') and hasAuthority('SCOPE_READ')")
 	@GetMapping
 	public List<Categoria> listar(){
 		return categoriaRepository.findAll();
 	}
 	
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CATEGORIA') and hasAuthority('SCOPE_WRITE')")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Categoria criar(@RequestBody  @Valid Categoria categoria, HttpServletResponse response) {
@@ -47,6 +50,7 @@ public class CategoriaController {
 		return categoria;
 	}
 	
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA') and hasAuthority('SCOPE_READ')")
 	@GetMapping("/{codigo}")
 	public ResponseEntity<Categoria> buscarPeloCodigo(@PathVariable Long codigo) {
 		return categoriaRepository.findById(codigo)

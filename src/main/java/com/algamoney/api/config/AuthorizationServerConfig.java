@@ -30,10 +30,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		clients.inMemory()
 		    			    .withClient("angular")
 		    				.secret("$2a$10$G1j5Rf8aEEiGc/AET9BA..xRR.qCpOUzBZoJd8ygbGy6tb3jsMT9G")
-		    				.scopes("read", "write")
+		    				.scopes("READ", "WRITE")
 		    				.authorizedGrantTypes("password", "refresh_token")
 		    				.refreshTokenValiditySeconds(3600 * 24)
-		    				.accessTokenValiditySeconds(20);    
+		    				.accessTokenValiditySeconds(1800)
+		    			.and()
+			    			.withClient("mobile")
+		    				.secret("$2a$10$G1j5Rf8aEEiGc/AET9BA..xRR.qCpOUzBZoJd8ygbGy6tb3jsMT9G")
+		    				.scopes("READ")
+		    				.authorizedGrantTypes("password", "refresh_token")
+		    				.refreshTokenValiditySeconds(3600 * 24)
+		    				.accessTokenValiditySeconds(1800);    
 	}
 	
 	@Override
