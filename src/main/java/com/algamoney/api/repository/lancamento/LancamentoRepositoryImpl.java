@@ -159,7 +159,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 				builder.lessThanOrEqualTo(root.get(Lancamento_.dataVencimento), fim)
 		);
 		
-		query.groupBy(root.get(Lancamento_.pessoa));
+		query.groupBy(root.get(Lancamento_.tipo), root.get(Lancamento_.pessoa));
 			
 		TypedQuery<LancamentoEstatisticaPessoa> typedQuery = entityManager.createQuery(query);
 		
