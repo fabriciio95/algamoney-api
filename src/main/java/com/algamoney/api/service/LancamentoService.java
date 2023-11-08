@@ -11,6 +11,7 @@ import java.util.Map;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,6 +73,10 @@ public class LancamentoService {
 		return JasperExportManager.exportReportToPdf(jasperPrint);
 	}
 
+	@Scheduled(cron = "0 0 6 * * *")
+	public void avisarSobreLancamentosVencidos() {
+		System.out.println(">>>>>>>>>>>>>> Método sendo executado...");
+	}
 
 	private void validarPessoa(Lancamento lancamento) {
 		Pessoa pessoa = pessoaRepository.findById(lancamento.getPessoa().getCodigo()).orElseThrow(PessoaInexistenteOuInativaException::new);
