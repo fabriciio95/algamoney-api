@@ -1,6 +1,8 @@
 package com.algamoney.api.mail;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -9,16 +11,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+
 
 @Component
 public class Mailer {
 
 	@Autowired
 	private JavaMailSender mailSender;
-
+	
+	@Autowired
+	private TemplateEngine templateEngine;
+	
+//	@Autowired
+//	private LancamentoRepository lancRep;
+//
 //	@EventListener
 //	private void teste(ApplicationReadyEvent event) {
-//		enviarEmail("fabriciusiqueira@hotmail.com",  Arrays.asList("fabriciusiqueira@gmail.com") , "TESTE", "<h1> teste </h1>");
+//		
+//		enviarEmail("fabriciusiqueira@hotmail.com",  Arrays.asList("fabriciusiqueira@gmail.com") ,
+//				"TESTE LANCAMENTOS", "mail/aviso-lancamentos-vencidos", Map.of("lancamentos", lancRep.findAll()));
 //	}
 	
 	public void enviarEmail(String remetente, List<String> destinatarios, String assunto, String mensagem) {
@@ -38,5 +51,18 @@ public class Mailer {
 		} catch (MessagingException e) {
 			throw new RuntimeException("Problemas com o envio de e-mail", e);
 		}
+	}
+	
+	public void enviarEmail(String remetente, List<String> destinatarios, String assunto, String template, Map<String, Object> parametros) {
+		
+			
+			Context context = new Context(new Locale("pt", "BR"));
+			
+			parametros.entrySet().forEach(p -> context.setVariable(p.getKey(), p.getValue()));
+			
+			String mensagem = templateEngine.process(template, context);
+			
+			enviarEmail(remetente, destinatarios, assunto, mensagem);
+		
 	}
 }
