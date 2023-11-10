@@ -17,8 +17,17 @@ public class PessoaService {
 	private PessoaRepository pessoaRepository;
 	
 	@Transactional
+	public Pessoa salvar(Pessoa pessoa) {
+		pessoa.getContatos().forEach(c -> c.setPessoa(pessoa));
+		
+		return pessoaRepository.save(pessoa);
+	}
+	
+	@Transactional
 	public Pessoa atualizar(Pessoa pessoa, Long codigo) {
 		Pessoa pessoaSalva  = buscarPessoa(codigo);
+		
+		pessoa.getContatos().forEach(c -> c.setPessoa(pessoa));
 		
 		BeanUtils.copyProperties(pessoa, pessoaSalva, "codigo");
 		

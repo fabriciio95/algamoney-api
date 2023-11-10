@@ -44,7 +44,7 @@ public class PessoaController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Pessoa cadastrar(@RequestBody @Valid Pessoa pessoa, HttpServletResponse httpServleResponse) {
 		
-	   pessoa =  pessoaRepository.save(pessoa);
+	   pessoa =  pessoaService.salvar(pessoa);
 	   
 	   publisher.publishEvent(new RecursoCriadoEvent(this, httpServleResponse, pessoa.getCodigo()));
 	   
