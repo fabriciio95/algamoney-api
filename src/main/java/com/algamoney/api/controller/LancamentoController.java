@@ -1,5 +1,8 @@
 package com.algamoney.api.controller;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.algamoney.api.dto.LancamentoEstatisticaCategoria;
 import com.algamoney.api.dto.LancamentoEstatisticaDia;
@@ -57,6 +61,18 @@ public class LancamentoController {
 	
 	@Autowired
 	private MessageSource messageSource;
+	
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO') and hasAuthority('SCOPE_WRITE')")
+	@PostMapping("/anexo")
+	public String uploadAnexo(@RequestParam MultipartFile anexo) throws IOException {
+		OutputStream out = new FileOutputStream("C:\\Users\\Fabricio Macedp\\OneDrive\\Área de Trabalho\\Projetos\\estudo\\Algaworks\\algamoney-api\\" + anexo.getOriginalFilename());
+	
+		out.write(anexo.getBytes());
+		
+		out.close();
+		
+		return "Ok";
+	}
 	
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and hasAuthority('SCOPE_READ')")
 	@GetMapping
