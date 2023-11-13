@@ -3,5 +3,25 @@
     "name": "algamoney.origin-permitida",
     "type": "java.lang.String",
     "description": "A description for 'algamoney.origin-permitida'"
+  },
+  {
+    "name": "algamoney.s3.accessKeyId",
+    "type": "java.lang.String",
+    "description": "A description for 'algamoney.s3.accessKeyId'"
+  },
+  {
+    "name": "algamoney.s3.secretAcessKey",
+    "type": "java.lang.String",
+    "description": "A description for 'algamoney.s3.secretAcessKey'"
+  },
+  {
+    "name": "algamoney.s3.access-key-id",
+    "type": "java.lang.String",
+    "description": "A description for 'algamoney.s3.access-key-id'"
+  },
+  {
+    "name": "algamoney.s3.secret-access-key",
+    "type": "java.lang.String",
+    "description": "A description for 'algamoney.s3.secret-access-key'"
   }
 ]}
