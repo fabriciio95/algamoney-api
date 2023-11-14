@@ -48,6 +48,8 @@ public class AlgamoneyApiProperty {
 		private String accessKeyId;
 		
 		private String secretAccessKey;
+		
+		private String bucket = "fsm-algamoney-files";
 
 		public String getAccessKeyId() {
 			return accessKeyId;
@@ -63,6 +65,14 @@ public class AlgamoneyApiProperty {
 
 		public void setSecretAccessKey(String secretAcessKey) {
 			this.secretAccessKey = secretAcessKey;
+		}
+		
+		public String getBucket() {
+			return bucket;
+		}
+		
+		public void setBucket(String bucket) {
+			this.bucket = bucket;
 		}
 	}
 }
