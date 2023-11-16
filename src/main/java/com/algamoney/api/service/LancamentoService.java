@@ -75,6 +75,15 @@ public class LancamentoService {
 			validarPessoa(lancamento);
 		}
 		
+		if(!StringUtils.hasLength(lancamento.getAnexo())
+				&& StringUtils.hasLength(lancamentoSalvo.getAnexo())) {
+			
+			s3.remover(lancamentoSalvo.getAnexo());
+		} else if(StringUtils.hasText(lancamento.getAnexo())
+				&& !lancamentoSalvo.getAnexo().equals(lancamento.getAnexo())) {
+			s3.substituir(lancamentoSalvo.getAnexo(), lancamento.getAnexo());
+		}
+		
 		BeanUtils.copyProperties(lancamento, lancamentoSalvo, "codigo");
 		
 		return lancamentoSalvo;
