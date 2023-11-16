@@ -12,11 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.algamoney.api.config.property.AlgamoneyApiProperty;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.AccessControlList;
-import com.amazonaws.services.s3.model.GroupGrantee;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.ObjectTagging;
-import com.amazonaws.services.s3.model.Permission;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.Tag;
 
@@ -32,9 +30,6 @@ public class S3 {
 	private AlgamoneyApiProperty property;
 	
 	public String salvarTemporariamente(MultipartFile arquivo) {
-		AccessControlList acl = new AccessControlList();
-		acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
-		
 		ObjectMetadata objMetadata = new ObjectMetadata();
 		
 		objMetadata.setContentType(arquivo.getContentType());
@@ -48,7 +43,7 @@ public class S3 {
 					nomeUnico,
 					arquivo.getInputStream(),
 					objMetadata
-					).withAccessControlList(acl);
+					).withCannedAcl(CannedAccessControlList.PublicRead);
 			
 			putObjectRequest.setTagging(new ObjectTagging(Arrays.asList(new Tag("expirar", "true"))));
 			
@@ -62,6 +57,10 @@ public class S3 {
 		} catch (IOException e) {
 			throw new RuntimeException("Problemas ao tentar enviar o arquivo para o S3", e);
 		}
+	}
+	
+	public String configurarUrl(String objeto) {
+		return "\\\\" + property.getS3().getBucket() + ".s3.amazonaws.com/" + objeto;
 	}
 
 	private String gerarNomeUnico(String originalFilename) {

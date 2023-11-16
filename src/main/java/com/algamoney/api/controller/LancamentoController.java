@@ -1,8 +1,6 @@
 package com.algamoney.api.controller;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.algamoney.api.dto.Anexo;
 import com.algamoney.api.dto.LancamentoEstatisticaCategoria;
 import com.algamoney.api.dto.LancamentoEstatisticaDia;
 import com.algamoney.api.event.RecursoCriadoEvent;
@@ -45,6 +44,7 @@ import com.algamoney.api.repository.filter.LancamentoFilter;
 import com.algamoney.api.repository.project.ResumoLancamento;
 import com.algamoney.api.service.LancamentoService;
 import com.algamoney.api.service.exception.PessoaInexistenteOuInativaException;
+import com.algamoney.api.storage.S3;
 
 @RestController
 @RequestMapping("/lancamentos")
@@ -62,16 +62,15 @@ public class LancamentoController {
 	@Autowired
 	private MessageSource messageSource;
 	
+	@Autowired
+	private S3 s3;
+	
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO') and hasAuthority('SCOPE_WRITE')")
 	@PostMapping("/anexo")
-	public String uploadAnexo(@RequestParam MultipartFile anexo) throws IOException {
-		OutputStream out = new FileOutputStream("C:\\Users\\Fabricio Macedp\\OneDrive\\Área de Trabalho\\Projetos\\estudo\\Algaworks\\algamoney-api\\" + anexo.getOriginalFilename());
-	
-		out.write(anexo.getBytes());
+	public Anexo uploadAnexo(@RequestParam MultipartFile anexo) throws IOException {
+		String nome = s3.salvarTemporariamente(anexo);
 		
-		out.close();
-		
-		return "Ok";
+		return new Anexo(nome, s3.configurarUrl(nome));
 	}
 	
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and hasAuthority('SCOPE_READ')")
