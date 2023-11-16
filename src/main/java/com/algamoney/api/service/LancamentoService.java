@@ -16,6 +16,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.algamoney.api.dto.LancamentoEstatisticaPessoa;
 import com.algamoney.api.mail.Mailer;
@@ -26,6 +27,7 @@ import com.algamoney.api.repository.LancamentoRepository;
 import com.algamoney.api.repository.PessoaRepository;
 import com.algamoney.api.repository.UsuarioRepository;
 import com.algamoney.api.service.exception.PessoaInexistenteOuInativaException;
+import com.algamoney.api.storage.S3;
 
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -51,9 +53,16 @@ public class LancamentoService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
+	@Autowired
+	private S3 s3;
+	
 	@Transactional
 	public Lancamento salvar(Lancamento lancamento) {
 		validarPessoa(lancamento);
+		
+		if(StringUtils.hasText(lancamento.getAnexo())) {
+			s3.salvar(lancamento.getAnexo());
+		}
 		
 		return lancamentoRepository.save(lancamento);
 	}
