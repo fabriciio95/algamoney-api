@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -15,9 +16,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import com.algamoney.api.repository.listener.LancamentoAnexoListener;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@EntityListeners(LancamentoAnexoListener.class)
 @Entity
 public class Lancamento {
 
@@ -139,6 +142,14 @@ public class Lancamento {
 
 	public void setAnexo(String anexo) {
 		this.anexo = anexo;
+	}
+	
+	public String getUrlAnexo() {
+		return urlAnexo;
+	}
+	
+	public void setUrlAnexo(String urlAnexo) {
+		this.urlAnexo = urlAnexo;
 	}
 	
 	@JsonIgnore
