@@ -80,7 +80,7 @@ public class LancamentoService {
 			
 			s3.remover(lancamentoSalvo.getAnexo());
 		} else if(StringUtils.hasText(lancamento.getAnexo())
-				&& !lancamentoSalvo.getAnexo().equals(lancamento.getAnexo())) {
+				&& !lancamento.getAnexo().equals(lancamentoSalvo.getAnexo())) {
 			s3.substituir(lancamentoSalvo.getAnexo(), lancamento.getAnexo());
 		}
 		

@@ -1,6 +1,8 @@
 package com.algamoney.api.model;
 
 import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Embeddable
 public class Endereco {
@@ -15,9 +17,9 @@ public class Endereco {
 	
 	private String cep;
 	
-	private String cidade;
-	
-	private String estado;
+	@ManyToOne
+	@JoinColumn(name = "codigo_cidade")
+	private Cidade cidade;
 
 	public String getLogradouro() {
 		return logradouro;
@@ -58,20 +60,12 @@ public class Endereco {
 	public void setCep(String cep) {
 		this.cep = cep;
 	}
-
-	public String getCidade() {
+	
+	public Cidade getCidade() {
 		return cidade;
 	}
-
-	public void setCidade(String cidade) {
+	
+	public void setCidade(Cidade cidade) {
 		this.cidade = cidade;
-	}
-
-	public String getEstado() {
-		return estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
 	}
 }
