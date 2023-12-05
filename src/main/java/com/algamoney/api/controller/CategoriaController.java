@@ -2,9 +2,6 @@ package com.algamoney.api.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -21,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.algamoney.api.event.RecursoCriadoEvent;
 import com.algamoney.api.model.Categoria;
 import com.algamoney.api.repository.CategoriaRepository;
+
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/categorias")

@@ -2,13 +2,13 @@ package com.algamoney.api.event.listener;
 
 import java.net.URI;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.algamoney.api.event.RecursoCriadoEvent;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class RecursoCriadoListener implements ApplicationListener<RecursoCriadoEvent> {

@@ -28,5 +28,15 @@
     "name": "algamoney.s3.bucket",
     "type": "java.lang.String",
     "description": "A description for 'algamoney.s3.bucket'"
+  },
+  {
+    "name": "algamoney.seguranca.redirects-permitidos",
+    "type": "java.lang.String",
+    "description": "A description for 'algamoney.seguranca.redirects-permitidos'"
+  },
+  {
+    "name": "algamoney.seguranca.auth-server-url",
+    "type": "java.lang.String",
+    "description": "A description for 'algamoney.seguranca.auth-server-url'"
   }
 ]}

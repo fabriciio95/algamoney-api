@@ -2,8 +2,8 @@ package com.algamoney.api.model;
 
 import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 @Entity
 public class Estado {

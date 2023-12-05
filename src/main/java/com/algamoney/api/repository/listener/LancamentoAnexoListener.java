@@ -1,12 +1,12 @@
 package com.algamoney.api.repository.listener;
 
-import javax.persistence.PostLoad;
-
 import org.springframework.util.StringUtils;
 
 import com.algamoney.api.AlgamoneyApiApplication;
 import com.algamoney.api.model.Lancamento;
 import com.algamoney.api.storage.S3;
+
+import jakarta.persistence.PostLoad;
 
 public class LancamentoAnexoListener {
 	
