@@ -67,7 +67,7 @@ public class AuthServerConfig {
 					                                        		    .build())
 					                                          .clientSettings(ClientSettings.builder()
 					                                        		    	.requireAuthorizationConsent(true)
-					                                        		  .build())
+					                                        		    	.requireProofKey(true)					                                        		  .build())
 					                                      .build();
 	
 		RegisteredClient mobileClient = RegisteredClient.withId(UUID.randomUUID().toString())
@@ -77,7 +77,7 @@ public class AuthServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .redirectUris(uris -> uris.addAll(algamoneyApiProperty.getSeguranca().getRedirectsPermitidos()))
-                .scope("READ")
+                .scope("read")
                 .tokenSettings(TokenSettings.builder()
                		       .accessTokenTimeToLive(Duration.ofMinutes(30))
                		       .refreshTokenTimeToLive(Duration.ofDays(24))
