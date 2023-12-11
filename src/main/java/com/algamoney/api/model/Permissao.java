@@ -1,12 +1,15 @@
 package com.algamoney.api.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class Permissao {
+public class Permissao implements Serializable {
+
+	private static final long serialVersionUID = -1217202416667037122L;
 
 	@Id
 	private Long codigo;

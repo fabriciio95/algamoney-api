@@ -62,7 +62,7 @@ public class AuthServerConfig {
 					                                         .scope("READ")
 					                                         .scope("WRITE")
 					                                         .tokenSettings(TokenSettings.builder()
-					                                        		       .accessTokenTimeToLive(Duration.ofMinutes(30))
+					                                        		       .accessTokenTimeToLive(Duration.ofMinutes(15))
 					                                        		       .refreshTokenTimeToLive(Duration.ofDays(24))
 					                                        		    .build())
 					                                          .clientSettings(ClientSettings.builder()
